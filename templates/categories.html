@@ -1,0 +1,17 @@
+{% extends '_layout.html' %}
+
+{% block contents %}
+
+<h2>Kategorije</h2>
+
+<p>Odaberite kategoriju za pregled recepata.</p>
+
+<ul class="category-list">
+    {% for category in categories %}
+        <li>
+            {{ category.name }}
+        </li>
+    {% endfor %}
+</ul>
+
+{% endblock %}

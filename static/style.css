@@ -53,3 +53,16 @@ main {
 .hero h2 {
     margin-top: 0;
 }
+
+.category-list {
+    list-style: none;
+    padding: 0;
+}
+
+.category-list li {
+    background-color: white;
+    margin-bottom: 10px;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #dddddd;
+}
