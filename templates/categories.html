@@ -6,6 +6,12 @@
 
 <p>Odaberite kategoriju za pregled recepata.</p>
 
+{% if is_admin %}
+    <a href="{{ url_for('categories.create') }}">
+        Dodaj kategoriju
+    </a>
+{% endif %}
+
 <ul class="category-list">
     {% for category in categories %}
         <li>

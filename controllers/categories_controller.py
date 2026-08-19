@@ -1,0 +1,64 @@
+from flask import (
+    Blueprint,
+    render_template,
+    request,
+    redirect,
+    url_for,
+    session
+)
+
+from extensions import db
+from models.category import Category
+from models.user import User
+
+
+categories_bp = Blueprint("categories", __name__)
+
+
+@categories_bp.route("/categories")
+def index():
+    categories = Category.query.all()
+
+    user_id = session.get("user_id")
+    is_admin = False
+
+    if user_id is not None:
+        user = User.query.get(user_id)
+
+        if user is not None:
+            is_admin = user.is_admin
+
+    return render_template(
+        "categories.html",
+        categories=categories,
+        is_admin=is_admin,
+        title="Kategorije"
+    )
+
+@categories_bp.route("/categories/create", methods=["GET", "POST"])
+def create():
+    user_id = session.get("user_id")
+
+    if user_id is None:
+        return redirect(url_for("users.login"))
+
+    user = User.query.get(user_id)
+
+    if user is None or not user.is_admin:
+        return redirect(url_for("categories.index"))
+
+    if request.method == "POST":
+        name = request.form.get("name", "").strip()
+
+        if name:
+            category = Category(name=name)
+
+            db.session.add(category)
+            db.session.commit()
+
+            return redirect(url_for("categories.index"))
+
+    return render_template(
+        "category_create.html",
+        title="Dodaj kategoriju"
+    )
