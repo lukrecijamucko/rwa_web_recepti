@@ -2,6 +2,8 @@ from flask import Flask
 
 from config import Config
 from extensions import db, migrate
+from models.user import User
+from controllers.users_controller import users_bp
 
 
 def create_app():
@@ -10,6 +12,8 @@ def create_app():
 
     db.init_app(app)
     migrate.init_app(app, db)
+
+    app.register_blueprint(users_bp)
 
     @app.route("/")
     def home():
