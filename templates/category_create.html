@@ -4,6 +4,12 @@
 
 <h2>Dodaj kategoriju</h2>
 
+{% if error %}
+    <p class="form-error">
+        {{ error }}
+    </p>
+{% endif %}
+
 <form method="POST">
     <label for="name">Naziv kategorije:</label>
 
@@ -14,7 +20,9 @@
         required
     >
 
-    <button type="submit">Dodaj kategoriju</button>
+    <button type="submit">
+        Dodaj kategoriju
+    </button>
 </form>
 
 {% endblock %}

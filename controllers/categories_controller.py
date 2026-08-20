@@ -7,8 +7,7 @@ from flask import (
     session
 )
 
-from extensions import db
-from models.category import Category
+from models.category_service import CategoryService
 from models.user import User
 
 
@@ -17,7 +16,7 @@ categories_bp = Blueprint("categories", __name__)
 
 @categories_bp.route("/categories")
 def index():
-    categories = Category.query.all()
+    categories = CategoryService.get_all_categories()
 
     user_id = session.get("user_id")
     is_admin = False
@@ -35,6 +34,7 @@ def index():
         title="Kategorije"
     )
 
+
 @categories_bp.route("/categories/create", methods=["GET", "POST"])
 def create():
     user_id = session.get("user_id")
@@ -50,13 +50,23 @@ def create():
     if request.method == "POST":
         name = request.form.get("name", "").strip()
 
-        if name:
-            category = Category(name=name)
+        if not name:
+            return render_template(
+                "category_create.html",
+                title="Dodaj kategoriju",
+                error="Naziv kategorije je obavezan."
+            )
 
-            db.session.add(category)
-            db.session.commit()
+        created = CategoryService.create_category(name)
 
-            return redirect(url_for("categories.index"))
+        if not created:
+            return render_template(
+                "category_create.html",
+                title="Dodaj kategoriju",
+                error="Kategorija s tim nazivom već postoji."
+            )
+
+        return redirect(url_for("categories.index"))
 
     return render_template(
         "category_create.html",

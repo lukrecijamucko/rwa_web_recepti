@@ -5,6 +5,7 @@ from extensions import db, migrate
 from models.user import User
 from controllers.users_controller import users_bp
 from controllers.categories_controller import categories_bp
+from controllers.db_controller import db_bp
 
 
 def create_app():
@@ -16,6 +17,7 @@ def create_app():
 
     app.register_blueprint(users_bp)
     app.register_blueprint(categories_bp)
+    app.register_blueprint(db_bp)
 
     @app.route("/")
     def home():
