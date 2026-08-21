@@ -3,9 +3,11 @@ from flask import Flask
 from config import Config
 from extensions import db, migrate
 from models.user import User
+from models.recipe import Recipe
 from controllers.users_controller import users_bp
 from controllers.categories_controller import categories_bp
 from controllers.db_controller import db_bp
+from controllers.recipes_controller import recipes_bp
 
 
 def create_app():
@@ -18,6 +20,7 @@ def create_app():
     app.register_blueprint(users_bp)
     app.register_blueprint(categories_bp)
     app.register_blueprint(db_bp)
+    app.register_blueprint(recipes_bp)
 
     @app.route("/")
     def home():

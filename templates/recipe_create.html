@@ -1,0 +1,49 @@
+{% extends '_layout.html' %}
+
+{% block contents %}
+
+<h2>Novi recept</h2>
+
+<form method="POST">
+
+    <div>
+        <label for="title">Naziv:</label>
+        <input
+            type="text"
+            id="title"
+            name="title"
+            required
+        >
+    </div>
+
+    <br>
+
+    <div>
+        <label for="description">Opis:</label>
+        <textarea
+            id="description"
+            name="description"
+            required
+        ></textarea>
+    </div>
+
+    <br>
+
+    <div>
+        <label for="instructions">Upute:</label>
+        <textarea
+            id="instructions"
+            name="instructions"
+            required
+        ></textarea>
+    </div>
+
+    <br>
+
+    <button type="submit">
+        Spremi recept
+    </button>
+
+</form>
+
+{% endblock %}

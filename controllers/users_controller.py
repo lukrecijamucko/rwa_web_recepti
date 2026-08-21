@@ -11,6 +11,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 from extensions import db
 from models.user import User
+from sqlalchemy.exc import IntegrityError
 
 
 users_bp = Blueprint("users", __name__)
@@ -23,6 +24,17 @@ def register():
         email = request.form["email"].strip()
         password = request.form["password"]
 
+        existing_user = User.query.filter(
+            (User.username == username) |
+            (User.email == email)
+        ).first()
+
+        if existing_user:
+            return render_template(
+                "register.html",
+                error="Korisničko ime ili email već postoje."
+            )
+
         user = User(
             username=username,
             email=email,
@@ -30,7 +42,16 @@ def register():
         )
 
         db.session.add(user)
-        db.session.commit()
+
+        try:
+            db.session.commit()
+        except IntegrityError:
+            db.session.rollback()
+
+            return render_template(
+                "register.html",
+                error="Korisničko ime ili email već postoje."
+            )
 
         return redirect(url_for("users.login"))
 

@@ -8,6 +8,10 @@
 
 <h1>Registracija</h1>
 
+{% if error %}
+    <p>{{ error }}</p>
+{% endif %}
+
 <form method="POST">
 
     <label>

@@ -1,0 +1,53 @@
+{% extends '_layout.html' %}
+
+{% block contents %}
+
+<h2>Uredi recept</h2>
+
+<form method="POST">
+
+    <div>
+        <label for="title">Naziv:</label>
+
+        <input
+            type="text"
+            id="title"
+            name="title"
+            value="{{ recipe.title }}"
+            required
+        >
+    </div>
+
+    <br>
+
+    <div>
+        <label for="description">Opis:</label>
+
+        <textarea
+            id="description"
+            name="description"
+            required
+        >{{ recipe.description }}</textarea>
+    </div>
+
+    <br>
+
+    <div>
+        <label for="instructions">Upute:</label>
+
+        <textarea
+            id="instructions"
+            name="instructions"
+            required
+        >{{ recipe.instructions }}</textarea>
+    </div>
+
+    <br>
+
+    <button type="submit">
+        Spremi promjene
+    </button>
+
+</form>
+
+{% endblock %}
