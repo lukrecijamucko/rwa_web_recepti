@@ -1,0 +1,42 @@
+{% extends '_layout.html' %}
+
+{% block contents %}
+
+<h2>{{ category.name }}</h2>
+
+{% if recipes %}
+
+    {% for recipe in recipes %}
+
+        <article>
+            <h3>
+                <a href="{{ url_for(
+                    'recipes.show',
+                    recipe_id=recipe.id
+                ) }}">
+                    {{ recipe.title }}
+                </a>
+            </h3>
+
+            <p>
+                {{ recipe.description }}
+            </p>
+        </article>
+
+        <hr>
+
+    {% endfor %}
+
+{% else %}
+
+    <p>
+        Trenutno nema recepata u ovoj kategoriji.
+    </p>
+
+{% endif %}
+
+<a href="{{ url_for('categories.index') }}">
+    Povratak na kategorije
+</a>
+
+{% endblock %}

@@ -72,3 +72,19 @@ def create():
         "category_create.html",
         title="Dodaj kategoriju"
     )
+
+@categories_bp.route("/categories/<int:category_id>")
+def show(category_id):
+    category = CategoryService.get_category(category_id)
+
+    if category is None:
+        return "Kategorija nije pronađena.", 404
+
+    recipes = CategoryService.get_recipes_for_category(category_id)
+
+    return render_template(
+        "category_recipes.html",
+        category=category,
+        recipes=recipes,
+        title=category.name
+    )
