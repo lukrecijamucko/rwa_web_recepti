@@ -60,4 +60,69 @@
 
 {% endif %}
 
+<h3>Komentari</h3>
+
+{% if session.get("user_id") %}
+
+    <form
+        method="POST"
+        action="{{ url_for(
+            'comments.create',
+            recipe_id=recipe.id
+        ) }}"
+    >
+
+        <label for="content">Napiši komentar:</label>
+
+        <br>
+
+        <textarea
+            id="content"
+            name="content"
+            rows="4"
+            required
+        ></textarea>
+
+        <br>
+
+        <button type="submit">
+            Dodaj komentar
+        </button>
+
+    </form>
+
+{% else %}
+
+    <p>
+        Za dodavanje komentara morate biti prijavljeni.
+    </p>
+
+{% endif %}
+
+{% if comments %}
+
+    {% for comment in comments %}
+
+        <article>
+            <p>
+                {{ comment.content }}
+            </p>
+
+            <small>
+                Korisnik ID: {{ comment.user_id }}
+            </small>
+        </article>
+
+        <hr>
+
+    {% endfor %}
+
+{% else %}
+
+    <p>
+        Još nema komentara.
+    </p>
+
+{% endif %}
+
 {% endblock %}

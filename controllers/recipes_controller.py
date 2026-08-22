@@ -81,13 +81,17 @@ def show(recipe_id):
         recipe.id
     )
 
+    from models.comment import Comment
+
+    comments = Comment.query.filter_by(recipe_id=recipe.id).all()
+
     return render_template(
         "recipe_show.html",
         recipe=recipe,
         categories=categories,
+        comments=comments,
         title=recipe.title
     )
-
 
 @recipes_bp.route(
     "/recipes/<int:recipe_id>/edit",
