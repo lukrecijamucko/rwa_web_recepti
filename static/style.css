@@ -80,3 +80,13 @@ main {
 .category-list a:hover {
     text-decoration: underline;
 }
+
+.category-options {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.category-option {
+    display: block;
+    margin-bottom: 8px;
+}

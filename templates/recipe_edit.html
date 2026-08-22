@@ -4,6 +4,12 @@
 
 <h2>Uredi recept</h2>
 
+{% if error %}
+    <p class="form-error">
+        {{ error }}
+    </p>
+{% endif %}
+
 <form method="POST">
 
     <div>
@@ -40,6 +46,33 @@
             name="instructions"
             required
         >{{ recipe.instructions }}</textarea>
+    </div>
+
+    <br>
+
+    <div class="category-options">
+
+        <p>Kategorije:</p>
+
+        {% for category in categories %}
+
+            <label class="category-option">
+
+                <input
+                    type="checkbox"
+                    name="categories[]"
+                    value="{{ category.id }}"
+                    {% if category.id in selected_category_ids %}
+                        checked
+                    {% endif %}
+                >
+
+                {{ category.name }}
+
+            </label>
+
+        {% endfor %}
+
     </div>
 
     <br>

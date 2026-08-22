@@ -9,6 +9,7 @@ from flask import (
 
 from extensions import db
 from models.recipe import Recipe
+from models.category_service import CategoryService
 
 
 recipes_bp = Blueprint("recipes", __name__)
@@ -30,7 +31,19 @@ def create():
     if "user_id" not in session:
         return redirect(url_for("users.login"))
 
+    categories = CategoryService.get_all_categories()
+
     if request.method == "POST":
+        category_ids = request.form.getlist("categories[]")
+
+        if not category_ids:
+            return render_template(
+                "recipe_create.html",
+                categories=categories,
+                error="Odaberite barem jednu kategoriju.",
+                title="Novi recept"
+            )
+
         recipe = Recipe(
             title=request.form["title"].strip(),
             description=request.form["description"].strip(),
@@ -41,6 +54,11 @@ def create():
         db.session.add(recipe)
         db.session.commit()
 
+        CategoryService.set_categories_for_recipe(
+            recipe.id,
+            category_ids
+        )
+
         return redirect(
             url_for(
                 "recipes.show",
@@ -50,6 +68,7 @@ def create():
 
     return render_template(
         "recipe_create.html",
+        categories=categories,
         title="Novi recept"
     )
 
@@ -58,9 +77,14 @@ def create():
 def show(recipe_id):
     recipe = Recipe.query.get_or_404(recipe_id)
 
+    categories = CategoryService.get_categories_for_recipe(
+        recipe.id
+    )
+
     return render_template(
         "recipe_show.html",
         recipe=recipe,
+        categories=categories,
         title=recipe.title
     )
 
@@ -78,12 +102,40 @@ def edit(recipe_id):
     if recipe.user_id != session["user_id"]:
         return "Nemate dopuštenje za uređivanje ovog recepta.", 403
 
+    categories = CategoryService.get_all_categories()
+
+    selected_categories = (
+        CategoryService.get_categories_for_recipe(recipe.id)
+    )
+
+    selected_category_ids = [
+        category.id
+        for category in selected_categories
+    ]
+
     if request.method == "POST":
+        category_ids = request.form.getlist("categories[]")
+
+        if not category_ids:
+            return render_template(
+                "recipe_edit.html",
+                recipe=recipe,
+                categories=categories,
+                selected_category_ids=[],
+                error="Odaberite barem jednu kategoriju.",
+                title="Uredi recept"
+            )
+
         recipe.title = request.form["title"].strip()
         recipe.description = request.form["description"].strip()
         recipe.instructions = request.form["instructions"].strip()
 
         db.session.commit()
+
+        CategoryService.set_categories_for_recipe(
+            recipe.id,
+            category_ids
+        )
 
         return redirect(
             url_for(
@@ -95,6 +147,8 @@ def edit(recipe_id):
     return render_template(
         "recipe_edit.html",
         recipe=recipe,
+        categories=categories,
+        selected_category_ids=selected_category_ids,
         title="Uredi recept"
     )
 

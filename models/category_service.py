@@ -62,3 +62,38 @@ class CategoryService:
             recipes.append(recipe_category.recipe)
 
         return recipes
+
+    @staticmethod
+    def get_categories_for_recipe(recipe_id):
+        recipe_categories = RecipeCategory.query.filter(
+            RecipeCategory.recipe_id == recipe_id
+        ).all()
+
+        categories = []
+
+        for recipe_category in recipe_categories:
+            categories.append(recipe_category.category)
+
+        return categories
+
+    @staticmethod
+    def set_categories_for_recipe(recipe_id, category_ids):
+        current_categories = RecipeCategory.query.filter(
+            RecipeCategory.recipe_id == recipe_id
+        ).all()
+
+        for recipe_category in current_categories:
+            db.session.delete(recipe_category)
+
+        for category_id in category_ids:
+            category = Category.query.get(category_id)
+
+            if category is not None:
+                recipe_category = RecipeCategory(
+                    recipe_id=recipe_id,
+                    category_id=category.id
+                )
+
+                db.session.add(recipe_category)
+
+        db.session.commit()

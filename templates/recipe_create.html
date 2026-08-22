@@ -4,10 +4,17 @@
 
 <h2>Novi recept</h2>
 
+{% if error %}
+    <p class="form-error">
+        {{ error }}
+    </p>
+{% endif %}
+
 <form method="POST">
 
     <div>
         <label for="title">Naziv:</label>
+
         <input
             type="text"
             id="title"
@@ -20,6 +27,7 @@
 
     <div>
         <label for="description">Opis:</label>
+
         <textarea
             id="description"
             name="description"
@@ -31,11 +39,34 @@
 
     <div>
         <label for="instructions">Upute:</label>
+
         <textarea
             id="instructions"
             name="instructions"
             required
         ></textarea>
+    </div>
+
+    <br>
+
+    <div class="category-options">
+
+        <p>Kategorije:</p>
+
+        {% for category in categories %}
+
+            <label class="category-option">
+                <input
+                    type="checkbox"
+                    name="categories[]"
+                    value="{{ category.id }}"
+                >
+
+                {{ category.name }}
+            </label>
+
+        {% endfor %}
+
     </div>
 
     <br>
