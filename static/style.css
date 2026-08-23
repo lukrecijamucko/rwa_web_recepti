@@ -90,3 +90,8 @@ main {
     display: block;
     margin-bottom: 8px;
 }
+
+.favorite-section {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}

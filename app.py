@@ -10,6 +10,7 @@ from controllers.categories_controller import categories_bp
 from controllers.db_controller import db_bp
 from controllers.recipes_controller import recipes_bp
 from controllers.comments_controller import comments_bp
+from controllers.favorites_controller import favorites_bp
 
 
 def create_app():
@@ -24,6 +25,7 @@ def create_app():
     app.register_blueprint(db_bp)
     app.register_blueprint(recipes_bp)
     app.register_blueprint(comments_bp)
+    app.register_blueprint(favorites_bp)
 
     @app.route("/")
     def home():

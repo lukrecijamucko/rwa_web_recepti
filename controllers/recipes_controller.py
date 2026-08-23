@@ -11,6 +11,8 @@ from extensions import db
 from models.recipe import Recipe
 from models.category_service import CategoryService
 from models.user import User
+from models.comment import Comment
+from models.favorite_service import FavoriteService
 
 
 recipes_bp = Blueprint("recipes", __name__)
@@ -82,12 +84,14 @@ def show(recipe_id):
         recipe.id
     )
 
-    from models.comment import Comment
-
-    comments = Comment.query.filter_by(recipe_id=recipe.id).all()
+    comments = Comment.query.filter_by(
+        recipe_id=recipe.id
+    ).all()
 
     user_id = session.get("user_id")
+
     is_admin = False
+    is_favorite = False
 
     if user_id is not None:
         user = User.query.get(user_id)
@@ -95,14 +99,21 @@ def show(recipe_id):
         if user is not None:
             is_admin = user.is_admin
 
+            is_favorite = FavoriteService.is_favorite(
+                user_id,
+                recipe.id
+            )
+
     return render_template(
         "recipe_show.html",
         recipe=recipe,
         categories=categories,
         comments=comments,
         is_admin=is_admin,
+        is_favorite=is_favorite,
         title=recipe.title
     )
+
 
 @recipes_bp.route(
     "/recipes/<int:recipe_id>/edit",

@@ -1,0 +1,38 @@
+{% extends '_layout.html' %}
+
+{% block contents %}
+
+<h2>Favoriti</h2>
+
+{% if recipes %}
+
+    {% for recipe in recipes %}
+
+        <article>
+            <h3>
+                <a href="{{ url_for(
+                    'recipes.show',
+                    recipe_id=recipe.id
+                ) }}">
+                    {{ recipe.title }}
+                </a>
+            </h3>
+
+            <p>
+                {{ recipe.description }}
+            </p>
+        </article>
+
+        <hr>
+
+    {% endfor %}
+
+{% else %}
+
+    <p>
+        Još nemate spremljenih favorita.
+    </p>
+
+{% endif %}
+
+{% endblock %}

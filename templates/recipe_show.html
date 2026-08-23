@@ -60,6 +60,44 @@
 
 {% endif %}
 
+{% if session.get("user_id") %}
+
+    <div class="favorite-section">
+
+        {% if is_favorite %}
+
+            <form
+                method="POST"
+                action="{{ url_for(
+                    'favorites.remove',
+                    recipe_id=recipe.id
+                ) }}"
+            >
+                <button type="submit">
+                    Ukloni iz favorita
+                </button>
+            </form>
+
+        {% else %}
+
+            <form
+                method="POST"
+                action="{{ url_for(
+                    'favorites.add',
+                    recipe_id=recipe.id
+                ) }}"
+            >
+                <button type="submit">
+                    Dodaj u favorite
+                </button>
+            </form>
+
+        {% endif %}
+
+    </div>
+
+{% endif %}
+
 <h3>Komentari</h3>
 
 {% if session.get("user_id") %}
