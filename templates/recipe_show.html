@@ -111,6 +111,23 @@
             <small>
                 Korisnik ID: {{ comment.user_id }}
             </small>
+
+            {% if session.get("user_id") == comment.user_id or is_admin %}
+
+                <form
+                    method="POST"
+                    action="{{ url_for(
+                        'comments.delete',
+                        comment_id=comment.id
+                    ) }}"
+                >
+                    <button type="submit">
+                        Obriši komentar
+                    </button>
+                </form>
+
+            {% endif %}
+
         </article>
 
         <hr>

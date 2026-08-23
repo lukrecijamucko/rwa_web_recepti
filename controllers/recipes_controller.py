@@ -10,6 +10,7 @@ from flask import (
 from extensions import db
 from models.recipe import Recipe
 from models.category_service import CategoryService
+from models.user import User
 
 
 recipes_bp = Blueprint("recipes", __name__)
@@ -85,11 +86,21 @@ def show(recipe_id):
 
     comments = Comment.query.filter_by(recipe_id=recipe.id).all()
 
+    user_id = session.get("user_id")
+    is_admin = False
+
+    if user_id is not None:
+        user = User.query.get(user_id)
+
+        if user is not None:
+            is_admin = user.is_admin
+
     return render_template(
         "recipe_show.html",
         recipe=recipe,
         categories=categories,
         comments=comments,
+        is_admin=is_admin,
         title=recipe.title
     )
 
