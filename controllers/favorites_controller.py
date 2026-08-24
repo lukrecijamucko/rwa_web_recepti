@@ -3,7 +3,8 @@ from flask import (
     render_template,
     redirect,
     url_for,
-    session
+    session,
+    jsonify
 )
 
 from models.recipe import Recipe
@@ -35,7 +36,9 @@ def index():
 )
 def add(recipe_id):
     if "user_id" not in session:
-        return redirect(url_for("users.login"))
+        return jsonify({
+            "status": "error"
+        }), 401
 
     recipe = Recipe.query.get_or_404(recipe_id)
 
@@ -44,12 +47,10 @@ def add(recipe_id):
         recipe.id
     )
 
-    return redirect(
-        url_for(
-            "recipes.show",
-            recipe_id=recipe.id
-        )
-    )
+    return jsonify({
+        "status": "ok",
+        "is_favorite": True
+    })
 
 
 @favorites_bp.route(
@@ -58,7 +59,9 @@ def add(recipe_id):
 )
 def remove(recipe_id):
     if "user_id" not in session:
-        return redirect(url_for("users.login"))
+        return jsonify({
+            "status": "error"
+        }), 401
 
     recipe = Recipe.query.get_or_404(recipe_id)
 
@@ -67,9 +70,7 @@ def remove(recipe_id):
         recipe.id
     )
 
-    return redirect(
-        url_for(
-            "recipes.show",
-            recipe_id=recipe.id
-        )
-    )
+    return jsonify({
+        "status": "ok",
+        "is_favorite": False
+    })

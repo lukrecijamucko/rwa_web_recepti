@@ -64,35 +64,29 @@
 
     <div class="favorite-section">
 
-        {% if is_favorite %}
+        <button
+            type="button"
+            class="favorite-button"
+            data-is-favorite="{{
+                'true' if is_favorite else 'false'
+            }}"
+            data-add-url="{{ url_for(
+                'favorites.add',
+                recipe_id=recipe.id
+            ) }}"
+            data-remove-url="{{ url_for(
+                'favorites.remove',
+                recipe_id=recipe.id
+            ) }}"
+        >
 
-            <form
-                method="POST"
-                action="{{ url_for(
-                    'favorites.remove',
-                    recipe_id=recipe.id
-                ) }}"
-            >
-                <button type="submit">
-                    Ukloni iz favorita
-                </button>
-            </form>
+            {% if is_favorite %}
+                Ukloni iz favorita
+            {% else %}
+                Dodaj u favorite
+            {% endif %}
 
-        {% else %}
-
-            <form
-                method="POST"
-                action="{{ url_for(
-                    'favorites.add',
-                    recipe_id=recipe.id
-                ) }}"
-            >
-                <button type="submit">
-                    Dodaj u favorite
-                </button>
-            </form>
-
-        {% endif %}
+        </button>
 
     </div>
 
@@ -179,5 +173,12 @@
     </p>
 
 {% endif %}
+
+<script
+    src="{{ url_for(
+        'static',
+        filename='favorites.js'
+    ) }}"
+></script>
 
 {% endblock %}

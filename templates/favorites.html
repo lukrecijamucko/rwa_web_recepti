@@ -4,11 +4,12 @@
 
 <h2>Favoriti</h2>
 
-{% if recipes %}
+<div id="favorites-list">
 
     {% for recipe in recipes %}
 
-        <article>
+        <article class="favorite-card">
+
             <h3>
                 <a href="{{ url_for(
                     'recipes.show',
@@ -21,18 +22,45 @@
             <p>
                 {{ recipe.description }}
             </p>
+
+            <button
+                type="button"
+                class="favorite-button"
+                data-is-favorite="true"
+                data-remove-card="true"
+                data-add-url="{{ url_for(
+                    'favorites.add',
+                    recipe_id=recipe.id
+                ) }}"
+                data-remove-url="{{ url_for(
+                    'favorites.remove',
+                    recipe_id=recipe.id
+                ) }}"
+            >
+                Ukloni iz favorita
+            </button>
+
         </article>
 
         <hr>
 
     {% endfor %}
 
-{% else %}
+</div>
 
-    <p>
+<p id="favorites-empty">
+
+    {% if not recipes %}
         Još nemate spremljenih favorita.
-    </p>
+    {% endif %}
 
-{% endif %}
+</p>
+
+<script
+    src="{{ url_for(
+        'static',
+        filename='favorites.js'
+    ) }}"
+></script>
 
 {% endblock %}

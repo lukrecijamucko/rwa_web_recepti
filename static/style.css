@@ -95,3 +95,13 @@ main {
     margin-top: 20px;
     margin-bottom: 20px;
 }
+
+.favorite-button {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.favorite-card {
+    margin-bottom: 20px;
+}
