@@ -13,6 +13,7 @@ from models.category_service import CategoryService
 from models.user import User
 from models.comment import Comment
 from models.favorite_service import FavoriteService
+from models.rating_service import RatingService
 
 
 recipes_bp = Blueprint("recipes", __name__)
@@ -92,6 +93,11 @@ def show(recipe_id):
 
     is_admin = False
     is_favorite = False
+    user_rating = None
+
+    rating_info = RatingService.get_rating_info(
+        recipe.id
+    )
 
     if user_id is not None:
         user = User.query.get(user_id)
@@ -104,6 +110,11 @@ def show(recipe_id):
                 recipe.id
             )
 
+            user_rating = RatingService.get_user_rating(
+                user_id,
+                recipe.id
+            )
+
     return render_template(
         "recipe_show.html",
         recipe=recipe,
@@ -111,6 +122,9 @@ def show(recipe_id):
         comments=comments,
         is_admin=is_admin,
         is_favorite=is_favorite,
+        user_rating=user_rating,
+        rating_average=rating_info["average"],
+        rating_count=rating_info["count"],
         title=recipe.title
     )
 

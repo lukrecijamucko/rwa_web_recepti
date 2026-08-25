@@ -60,6 +60,7 @@
 
 {% endif %}
 
+
 {% if session.get("user_id") %}
 
     <div class="favorite-section">
@@ -91,6 +92,60 @@
     </div>
 
 {% endif %}
+
+
+<div class="rating-section">
+
+    <h3>Ocjena</h3>
+
+    <p id="average-rating">
+        Prosječna ocjena:
+        {{ rating_average }}
+        ({{ rating_count }} ocjena)
+    </p>
+
+    {% if session.get("user_id") %}
+
+        <p id="user-rating">
+
+            {% if user_rating %}
+                Tvoja ocjena: {{ user_rating }}
+            {% else %}
+                Još nisi ocijenio/la ovaj recept.
+            {% endif %}
+
+        </p>
+
+        <div class="rating-buttons">
+
+            {% for value in [1, 2, 3, 4, 5] %}
+
+                <button
+                    type="button"
+                    class="rating-button"
+                    data-value="{{ value }}"
+                    data-url="{{ url_for(
+                        'ratings.rate',
+                        recipe_id=recipe.id
+                    ) }}"
+                >
+                    {{ value }}
+                </button>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <p>
+            Za ocjenjivanje recepta morate biti prijavljeni.
+        </p>
+
+    {% endif %}
+
+</div>
+
 
 <h3>Komentari</h3>
 
@@ -131,11 +186,13 @@
 
 {% endif %}
 
+
 {% if comments %}
 
     {% for comment in comments %}
 
         <article>
+
             <p>
                 {{ comment.content }}
             </p>
@@ -174,10 +231,18 @@
 
 {% endif %}
 
+
 <script
     src="{{ url_for(
         'static',
         filename='favorites.js'
+    ) }}"
+></script>
+
+<script
+    src="{{ url_for(
+        'static',
+        filename='ratings.js'
     ) }}"
 ></script>
 

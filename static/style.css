@@ -105,3 +105,17 @@ main {
 .favorite-card {
     margin-bottom: 20px;
 }
+
+.rating-section {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.rating-buttons {
+    margin-top: 10px;
+}
+
+.rating-button {
+    margin-right: 5px;
+    cursor: pointer;
+}
