@@ -6,6 +6,7 @@ from models.user import User
 from models.recipe import Recipe
 from models.comment import Comment
 from models.rating import Rating
+from models.ingredient import Ingredient
 from controllers.users_controller import users_bp
 from controllers.categories_controller import categories_bp
 from controllers.db_controller import db_bp

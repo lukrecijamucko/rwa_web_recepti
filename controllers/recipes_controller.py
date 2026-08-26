@@ -14,6 +14,7 @@ from models.user import User
 from models.comment import Comment
 from models.favorite_service import FavoriteService
 from models.rating_service import RatingService
+from models.ingredient import Ingredient
 
 
 recipes_bp = Blueprint("recipes", __name__)
@@ -40,6 +41,20 @@ def create():
     if request.method == "POST":
         category_ids = request.form.getlist("categories[]")
 
+        ingredient_names = [
+            name.strip()
+            for name in request.form.getlist("ingredients")
+            if name.strip()
+        ]
+
+        if not ingredient_names:
+            return render_template(
+                "recipe_create.html",
+                categories=categories,
+                error="Unesite barem jedan sastojak.",
+                title="Novi recept"
+            )
+
         if not category_ids:
             return render_template(
                 "recipe_create.html",
@@ -56,6 +71,20 @@ def create():
         )
 
         db.session.add(recipe)
+        db.session.commit()
+
+        for name in ingredient_names:
+            ingredient = Ingredient.query.filter_by(
+                name=name
+            ).first()
+
+            if ingredient is None:
+                ingredient = Ingredient(name=name)
+                db.session.add(ingredient)
+                db.session.flush()
+
+            recipe.ingredients.append(ingredient)
+
         db.session.commit()
 
         CategoryService.set_categories_for_recipe(
@@ -156,6 +185,22 @@ def edit(recipe_id):
     if request.method == "POST":
         category_ids = request.form.getlist("categories[]")
 
+        ingredient_names = [
+            name.strip()
+            for name in request.form.getlist("ingredients")
+            if name.strip()
+        ]
+
+        if not ingredient_names:
+            return render_template(
+                "recipe_edit.html",
+                recipe=recipe,
+                categories=categories,
+                selected_category_ids=selected_category_ids,
+                error="Unesite barem jedan sastojak.",
+                title="Uredi recept"
+            )
+
         if not category_ids:
             return render_template(
                 "recipe_edit.html",
@@ -176,6 +221,22 @@ def edit(recipe_id):
             recipe.id,
             category_ids
         )
+
+        recipe.ingredients.clear()
+
+        for name in ingredient_names:
+            ingredient = Ingredient.query.filter_by(
+                name=name
+            ).first()
+
+            if ingredient is None:
+                ingredient = Ingredient(name=name)
+                db.session.add(ingredient)
+                db.session.flush()
+
+            recipe.ingredients.append(ingredient)
+
+        db.session.commit()
 
         return redirect(
             url_for(

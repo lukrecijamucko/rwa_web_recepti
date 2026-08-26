@@ -75,6 +75,27 @@
 
     </div>
 
+    <div class="ingredient-options">
+
+        <p>Sastojci:</p>
+
+        <div id="ingredients-container">
+
+            {% for ingredient in recipe.ingredients %}
+
+                <input
+                    type="text"
+                    name="ingredients"
+                    value="{{ ingredient.name }}"
+                    required
+                >
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
     <br>
 
     <button type="submit">
