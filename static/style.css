@@ -119,3 +119,30 @@ main {
     margin-right: 5px;
     cursor: pointer;
 }
+
+.daily-recipes {
+    margin-top: 30px;
+}
+
+.recipe-grid {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.recipe-card {
+    background-color: white;
+    border: 1px solid #dddddd;
+    border-radius: 8px;
+    padding: 20px;
+    flex: 1;
+    min-width: 250px;
+}
+
+.recipe-card h3 {
+    margin-top: 0;
+}
+
+.recipe-card a {
+    color: #333333;
+}

@@ -14,6 +14,7 @@ from controllers.recipes_controller import recipes_bp
 from controllers.comments_controller import comments_bp
 from controllers.favorites_controller import favorites_bp
 from controllers.ratings_controller import ratings_bp
+from controllers.home_controller import home_bp
 
 
 def create_app():
@@ -30,10 +31,7 @@ def create_app():
     app.register_blueprint(comments_bp)
     app.register_blueprint(favorites_bp)
     app.register_blueprint(ratings_bp)
-
-    @app.route("/")
-    def home():
-        return "Aplikacija radi!"
+    app.register_blueprint(home_bp)
 
     return app
 
