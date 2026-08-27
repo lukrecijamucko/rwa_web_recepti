@@ -96,6 +96,13 @@
 
         </div>
 
+        <button
+            type="button"
+            id="add-ingredient"
+        >
+            + Dodaj sastojak
+        </button>
+
     </div>
 
     <br>
@@ -105,5 +112,9 @@
     </button>
 
 </form>
+
+<script
+    src="{{ url_for('static', filename='recipe.js') }}"
+></script>
 
 {% endblock %}
