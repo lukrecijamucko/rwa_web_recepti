@@ -3,12 +3,66 @@
 {% block contents %}
 
 <section class="hero">
+
     <h2>Pronađi recept za danas</h2>
 
     <p>
-        Pregledaj recepte drugih korisnika, pronađi svoje favorite
-        i otkrij nešto novo za pripremu.
+        Svaki put možeš otkriti nove recepte
+        iz različitih kategorija.
     </p>
+
+</section>
+
+
+<section class="daily-recipes">
+
+    <h2>Današnji prijedlozi</h2>
+
+    {% if suggestions %}
+
+        <div class="recipe-grid">
+
+            {% for suggestion in suggestions %}
+
+                <article class="recipe-card">
+
+                    <h3>
+                        <a href="{{ url_for(
+                            'recipes.show',
+                            recipe_id=suggestion.recipe.id
+                        ) }}">
+                            {{ suggestion.recipe.title }}
+                        </a>
+                    </h3>
+
+                    <p>
+                        {{ suggestion.recipe.description }}
+                    </p>
+
+                    <p>
+                        Kategorija:
+                        <a href="{{ url_for(
+                            'categories.show',
+                            category_id=suggestion.category.id
+                        ) }}">
+                            {{ suggestion.category.name }}
+                        </a>
+                    </p>
+
+                </article>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <p>
+            Trenutno nema dovoljno recepata za prikaz.
+        </p>
+
+    {% endif %}
+
 </section>
 
 {% endblock %}
