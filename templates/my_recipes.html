@@ -4,6 +4,28 @@
 
 <h2>Moji recepti</h2>
 
+<form method="GET" action="{{ url_for('recipes.index') }}">
+
+    <label for="ingredient">
+        Pretraži po sastojku:
+    </label>
+
+    <input
+        type="text"
+        id="ingredient"
+        name="ingredient"
+        value="{{ ingredient_name }}"
+        placeholder="npr. brašno"
+    >
+
+    <button type="submit">
+        Pretraži
+    </button>
+
+</form>
+
+<br>
+
 {% if recipes %}
 
     {% for recipe in recipes %}

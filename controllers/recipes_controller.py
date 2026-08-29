@@ -22,11 +22,27 @@ recipes_bp = Blueprint("recipes", __name__)
 
 @recipes_bp.route("/recipes")
 def index():
-    recipes = Recipe.query.all()
+    ingredient_name = request.args.get(
+        "ingredient",
+        ""
+    ).strip()
+
+    if ingredient_name:
+        recipes = (
+            Recipe.query
+            .join(Recipe.ingredients)
+            .filter(
+                Ingredient.name.ilike(ingredient_name)
+            )
+            .all()
+        )
+    else:
+        recipes = Recipe.query.all()
 
     return render_template(
         "my_recipes.html",
         recipes=recipes,
+        ingredient_name=ingredient_name,
         title="Recepti"
     )
 
