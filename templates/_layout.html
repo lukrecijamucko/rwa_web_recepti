@@ -1,34 +1,75 @@
 <!DOCTYPE html>
 <html lang="hr">
+
 <head>
     <meta charset="UTF-8">
     <title>{{ title }}</title>
 
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='style.css') }}">
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
 </head>
 
 <body>
 
     <header class="site-header">
         <div class="container">
+
             <h1>Recepti</h1>
 
             <nav class="main-nav">
-                <a href="/">Početna</a>
-                <a href="/recipes">Recepti</a>
-                <a href="/categories">Kategorije</a>
-                <a href="/favorites">Favoriti</a>
-                <a href="/my-recipes">Moji recepti</a>
-                <a href="/login">Prijava</a>
+
+                <a href="{{ url_for('home.index') }}">
+                    Početna
+                </a>
+
+                <a href="{{ url_for('recipes.index') }}">
+                    Recepti
+                </a>
+
+                <a href="{{ url_for('categories.index') }}">
+                    Kategorije
+                </a>
+
+                {% if session.get("user_id") %}
+
+                    <a href="{{ url_for('favorites.index') }}">
+                        Favoriti
+                    </a>
+
+                    <a href="{{ url_for('recipes.my_recipes') }}">
+                        Moji recepti
+                    </a>
+
+                    <a href="{{ url_for('users.logout') }}">
+                        Odjava
+                    </a>
+
+                {% else %}
+
+                    <a href="{{ url_for('users.login') }}">
+                        Prijava
+                    </a>
+
+                    <a href="{{ url_for('users.register') }}">
+                        Registracija
+                    </a>
+
+                {% endif %}
+
             </nav>
+
         </div>
     </header>
 
     <main class="container">
+
         {% block contents %}
         {% endblock %}
+
     </main>
 
 </body>
+
 </html>
