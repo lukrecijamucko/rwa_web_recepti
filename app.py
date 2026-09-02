@@ -15,6 +15,7 @@ from controllers.comments_controller import comments_bp
 from controllers.favorites_controller import favorites_bp
 from controllers.ratings_controller import ratings_bp
 from controllers.home_controller import home_bp
+from controllers.admin_controller import admin_bp
 
 
 def create_app():
@@ -32,6 +33,7 @@ def create_app():
     app.register_blueprint(favorites_bp)
     app.register_blueprint(ratings_bp)
     app.register_blueprint(home_bp)
+    app.register_blueprint(admin_bp)
 
     return app
 

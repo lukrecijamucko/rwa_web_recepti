@@ -1,0 +1,40 @@
+{% extends '_layout.html' %}
+
+{% block contents %}
+
+<h2>Admin dashboard</h2>
+
+<h3>Statistika</h3>
+
+<ul>
+    <li>Broj korisnika: {{ users|length }}</li>
+    <li>Broj recepata: {{ recipe_count }}</li>
+    <li>Broj komentara: {{ comment_count }}</li>
+    <li>Broj kategorija: {{ category_count }}</li>
+</ul>
+
+<h3>Korisnici</h3>
+
+{% if users %}
+
+    <ul>
+        {% for user in users %}
+            <li>
+                {{ user.username }}
+                -
+                {{ user.email }}
+
+                {% if user.is_admin %}
+                    (admin)
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+
+{% else %}
+
+    <p>Nema korisnika.</p>
+
+{% endif %}
+
+{% endblock %}

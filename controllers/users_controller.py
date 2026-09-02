@@ -69,7 +69,7 @@ def login():
         if user and check_password_hash(user.password, password):
             session["user_id"] = user.id
 
-            return redirect(url_for("home"))
+            return redirect(url_for("home.index"))
 
     return render_template("login.html")
 
@@ -78,4 +78,4 @@ def login():
 def logout():
     session.pop("user_id", None)
 
-    return redirect(url_for("home"))
+    return redirect(url_for("home.index"))
